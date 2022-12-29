@@ -30,14 +30,3 @@
 *.exe
 *.out
 *.app
-
-# CMake
-*.vcxproj
-*.sln
-*.filters
-CMakeFiles
-x64
-*.dir
-CMakeCache.txt
-Debug
-*.cmake
