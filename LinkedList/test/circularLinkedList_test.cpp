@@ -1,18 +1,18 @@
-#include "linkedList.hpp"
+#include "circularLinkedList.hpp"
 
 #include <gtest/gtest.h>
 
 TEST(Data, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_EQ(tst.data(), nullptr);
 }
 TEST(Data, Node1) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   EXPECT_EQ(tst.data()->data, 1);
 }
 TEST(Data, Node2) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   tst.push(2);
   EXPECT_EQ(tst.data()->data, 1);
@@ -20,7 +20,7 @@ TEST(Data, Node2) {
 }
 
 TEST(Push, Ints) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   tst.push(2);
   tst.push(3);
@@ -33,10 +33,10 @@ TEST(Push, Ints) {
   ptr = ptr->next;
   ASSERT_NE(ptr, nullptr);
   EXPECT_EQ(ptr->data, 3);
-  EXPECT_EQ(ptr->next, nullptr);
+  EXPECT_EQ(ptr->next, tst.data());
 }
 TEST(Push, Doubles) {
-  LinkedList<double> tst;
+  CircularLinkedList<double> tst;
   tst.push(1.1);
   tst.push(2.2);
   tst.push(3.3);
@@ -49,10 +49,10 @@ TEST(Push, Doubles) {
   ptr = ptr->next;
   ASSERT_NE(ptr, nullptr);
   EXPECT_EQ(ptr->data, 3.3);
-  EXPECT_EQ(ptr->next, nullptr);
+  EXPECT_EQ(ptr->next, tst.data());
 }
 TEST(Push, Vectors) {
-  LinkedList<std::vector<int>> tst;
+  CircularLinkedList<std::vector<int>> tst;
   tst.push(std::vector<int>(1, 1));
   tst.push(std::vector<int>(2, 2));
   tst.push(std::vector<int>(3, 3));
@@ -65,11 +65,11 @@ TEST(Push, Vectors) {
   ptr = ptr->next;
   ASSERT_NE(ptr, nullptr);
   EXPECT_EQ(ptr->data.size(), 3);
-  EXPECT_EQ(ptr->next, nullptr);
+  EXPECT_EQ(ptr->next, tst.data());
 }
 
 TEST(Insert, Beginning) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);                    // 1
   tst.push(2);                    // 1 2
   tst.push(3);                    // 1 2 3
@@ -87,10 +87,10 @@ TEST(Insert, Beginning) {
   ptr = ptr->next;
   ASSERT_NE(ptr, nullptr);
   EXPECT_EQ(ptr->data, 3);
-  EXPECT_EQ(ptr->next, nullptr);
+  EXPECT_EQ(ptr->next, tst.data());
 }
 TEST(Insert, Middle) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);                    // 1
   tst.push(2);                    // 1 2
   tst.push(3);                    // 1 2 3
@@ -108,10 +108,10 @@ TEST(Insert, Middle) {
   ptr = ptr->next;
   ASSERT_NE(ptr, nullptr);
   EXPECT_EQ(ptr->data, 3);
-  EXPECT_EQ(ptr->next, nullptr);
+  EXPECT_EQ(ptr->next, tst.data());
 }
 TEST(Insert, End) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);                    // 1
   tst.push(2);                    // 1 2
   tst.push(3);                    // 1 2 3
@@ -129,10 +129,10 @@ TEST(Insert, End) {
   ptr = ptr->next;
   ASSERT_NE(ptr, nullptr);
   EXPECT_EQ(ptr->data, 4);
-  EXPECT_EQ(ptr->next, nullptr);
+  EXPECT_EQ(ptr->next, tst.data());
 }
 TEST(Insert, OOB) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);                     // 1
   tst.push(2);                     // 1 2
   tst.push(3);                     // 1 2 3
@@ -147,10 +147,10 @@ TEST(Insert, OOB) {
   ptr = ptr->next;
   ASSERT_NE(ptr, nullptr);
   EXPECT_EQ(ptr->data, 3);
-  EXPECT_EQ(ptr->next, nullptr);
+  EXPECT_EQ(ptr->next, tst.data());
 }
 TEST(Insert, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_TRUE(tst.insert(0, 1));  // 1
   EXPECT_TRUE(tst.insert(0, 2));  // 2 1
   EXPECT_TRUE(tst.insert(1, 3));  // 2 3 1
@@ -168,17 +168,17 @@ TEST(Insert, Empty) {
   ptr = ptr->next;
   ASSERT_NE(ptr, nullptr);
   EXPECT_EQ(ptr->data, 4);
-  EXPECT_EQ(ptr->next, nullptr);
+  EXPECT_EQ(ptr->next, tst.data());
 }
 
 TEST(Get, OOB) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_THROW(tst.get(0), std::out_of_range);
   tst.push(0);
   EXPECT_THROW(tst.get(1), std::out_of_range);
 }
 TEST(Get, InBounds) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(0);
   tst.push(1);
   tst.push(2);
@@ -191,13 +191,13 @@ TEST(Get, InBounds) {
 }
 
 TEST(GetOp, OOB) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_THROW(tst[0], std::out_of_range);
   tst.push(0);
   EXPECT_THROW(tst[1], std::out_of_range);
 }
 TEST(GetOp, InBounds) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(0);
   tst.push(1);
   tst.push(2);
@@ -210,24 +210,24 @@ TEST(GetOp, InBounds) {
 }
 
 TEST(Erase, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_THROW(tst.erase(0), std::out_of_range);
 }
 TEST(Erase, Node1) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   EXPECT_NO_THROW(tst.erase(0));
   EXPECT_EQ(tst.data(), nullptr);
 }
 TEST(Erase, Node2) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   tst.push(2);
   EXPECT_NO_THROW(tst.erase(0));
   EXPECT_EQ(tst[0], 2);
 }
 TEST(Erase, Node2_1) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   EXPECT_NO_THROW(tst.erase(0));
   EXPECT_EQ(tst.data(), nullptr);
@@ -235,7 +235,7 @@ TEST(Erase, Node2_1) {
   EXPECT_EQ(tst[0], 2);
 }
 TEST(Erase, Middle) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   tst.push(2);
   tst.push(3);
@@ -245,7 +245,7 @@ TEST(Erase, Middle) {
   EXPECT_THROW(tst[2], std::out_of_range);
 }
 TEST(Erase, End) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   tst.push(2);
   tst.push(3);
@@ -256,24 +256,24 @@ TEST(Erase, End) {
 }
 
 TEST(Pop, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_THROW(tst.pop(), std::out_of_range);
 }
 TEST(Pop, Node1) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   EXPECT_EQ(tst.pop(), 1);
   EXPECT_EQ(tst.data(), nullptr);
 }
 TEST(Pop, Node2) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   tst.push(2);
   EXPECT_EQ(tst.pop(), 2);
   EXPECT_EQ(tst[0], 1);
 }
 TEST(Pop, Node2_1) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   EXPECT_EQ(tst.pop(), 1);
   EXPECT_EQ(tst.data(), nullptr);
@@ -282,19 +282,19 @@ TEST(Pop, Node2_1) {
 }
 
 TEST(Clear, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_NO_THROW(tst.clear());
   EXPECT_TRUE(tst.empty());
 }
 TEST(Clear, NotEmpty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   tst.push(2);
   EXPECT_NO_THROW(tst.clear());
   EXPECT_TRUE(tst.empty());
 }
 TEST(Clear, DoubleClear) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);
   tst.push(2);
   EXPECT_NO_THROW(tst.clear());
@@ -304,18 +304,18 @@ TEST(Clear, DoubleClear) {
 }
 
 TEST(Front, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_THROW(tst.front(), std::out_of_range);
 }
 TEST(Front, Push) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   EXPECT_EQ(tst.front(), 1);
   tst.push(2);  // 1 2
   EXPECT_EQ(tst.front(), 1);
 }
 TEST(Front, Insert) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.insert(0, 1);  // 1
   EXPECT_EQ(tst.front(), 1);
   tst.insert(0, 2);  // 2 1
@@ -324,7 +324,7 @@ TEST(Front, Insert) {
   EXPECT_EQ(tst.front(), 2);
 }
 TEST(Front, Erase) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);   // 1
   tst.push(2);   // 1 2
   tst.push(3);   // 1 2 3
@@ -334,14 +334,14 @@ TEST(Front, Erase) {
   EXPECT_EQ(tst.front(), 2);
 }
 TEST(Front, Pop) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   tst.push(2);  // 1 2
   tst.pop();    // 1
   EXPECT_EQ(tst.front(), 1);
 }
 TEST(Front, Clear) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   tst.push(2);  // 1 2
   tst.clear();  // *
@@ -349,18 +349,18 @@ TEST(Front, Clear) {
 }
 
 TEST(Back, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_THROW(tst.back(), std::out_of_range);
 }
 TEST(Back, Push) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   EXPECT_EQ(tst.back(), 1);
   tst.push(2);  // 1 2
   EXPECT_EQ(tst.back(), 2);
 }
 TEST(Back, Insert) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.insert(0, 1);  // 1
   EXPECT_EQ(tst.back(), 1);
   tst.insert(0, 2);  // 2 1
@@ -369,7 +369,7 @@ TEST(Back, Insert) {
   EXPECT_EQ(tst.back(), 3);
 }
 TEST(Back, Erase) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);   // 1
   tst.push(2);   // 1 2
   tst.push(3);   // 1 2 3
@@ -379,14 +379,14 @@ TEST(Back, Erase) {
   EXPECT_EQ(tst.back(), 2);
 }
 TEST(Back, Pop) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   tst.push(2);  // 1 2
   tst.pop();    // 1
   EXPECT_EQ(tst.back(), 1);
 }
 TEST(Back, Clear) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   tst.push(2);  // 1 2
   tst.clear();  // *
@@ -394,18 +394,18 @@ TEST(Back, Clear) {
 }
 
 TEST(Size, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_EQ(tst.size(), 0);
 }
 TEST(Size, Push) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   EXPECT_EQ(tst.size(), 1);
   tst.push(2);  // 1 2
   EXPECT_EQ(tst.size(), 2);
 }
 TEST(Size, Insert) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.insert(0, 1);  // 1
   EXPECT_EQ(tst.size(), 1);
   tst.insert(0, 2);  // 2 1
@@ -414,7 +414,7 @@ TEST(Size, Insert) {
   EXPECT_EQ(tst.size(), 3);
 }
 TEST(Size, Erase) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);   // 1
   tst.push(2);   // 1 2
   tst.erase(0);  // 2
@@ -423,7 +423,7 @@ TEST(Size, Erase) {
   EXPECT_EQ(tst.size(), 0);
 }
 TEST(Size, Pop) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   tst.push(2);  // 1 2
   tst.pop();    // 1
@@ -432,7 +432,7 @@ TEST(Size, Pop) {
   EXPECT_EQ(tst.size(), 0);
 }
 TEST(Size, Clear) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   tst.push(2);  // 1 2
   tst.clear();  // *
@@ -440,18 +440,18 @@ TEST(Size, Clear) {
 }
 
 TEST(Empty, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   EXPECT_TRUE(tst.empty());
 }
 TEST(Empty, Push) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   EXPECT_FALSE(tst.empty());
   tst.push(2);  // 1 2
   EXPECT_FALSE(tst.empty());
 }
 TEST(Empty, Insert) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.insert(0, 1);  // 1
   EXPECT_FALSE(tst.empty());
   tst.insert(0, 2);  // 2 1
@@ -460,7 +460,7 @@ TEST(Empty, Insert) {
   EXPECT_FALSE(tst.empty());
 }
 TEST(Empty, Erase) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);   // 1
   tst.push(2);   // 1 2
   tst.erase(0);  // 2
@@ -469,7 +469,7 @@ TEST(Empty, Erase) {
   EXPECT_TRUE(tst.empty());
 }
 TEST(Empty, Pop) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   tst.push(2);  // 1 2
   tst.pop();    // 1
@@ -478,7 +478,7 @@ TEST(Empty, Pop) {
   EXPECT_TRUE(tst.empty());
 }
 TEST(Empty, Clear) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   tst.push(1);  // 1
   tst.push(2);  // 1 2
   tst.clear();  // *
@@ -486,23 +486,23 @@ TEST(Empty, Clear) {
 }
 
 TEST(Stream, Empty) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   std::stringstream out;
   out << tst;
-  EXPECT_STREQ(out.str().c_str(), "[N]");
+  EXPECT_STREQ(out.str().c_str(), "[]");
 }
 TEST(Stream, Node1) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   std::stringstream out;
   tst.push(1);
   out << tst;
-  EXPECT_STREQ(out.str().c_str(), "[1 > N]");
+  EXPECT_STREQ(out.str().c_str(), "[1 > *]");
 }
 TEST(Stream, Node2) {
-  LinkedList<int> tst;
+  CircularLinkedList<int> tst;
   std::stringstream out;
   tst.push(1);
   tst.push(2);
   out << tst;
-  EXPECT_STREQ(out.str().c_str(), "[1 > 2 > N]");
+  EXPECT_STREQ(out.str().c_str(), "[1 > 2 > *]");
 }

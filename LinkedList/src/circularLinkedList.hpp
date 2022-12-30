@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iomanip>
 #include <sstream>
 
 template <typename T>
@@ -10,15 +9,15 @@ struct Node {
 };
 
 template <typename T>
-class LinkedList {
+class CircularLinkedList {
  private:
   size_t length;
   Node<T>* head;
   Node<T>* tail;
 
  public:
-  LinkedList();
-  ~LinkedList();
+  CircularLinkedList();
+  ~CircularLinkedList();
   void push(T value);
   bool insert(unsigned int pos, T value);
   T get(unsigned int pos);
@@ -35,23 +34,27 @@ class LinkedList {
     return this->get(pos);
   }
 
-  friend std::ostream& operator<<(std::ostream& os, const LinkedList<T>& f) {
+  friend std::ostream& operator<<(std::ostream& os, const CircularLinkedList<T>& f) {
     Node<T>* ptr = f.head;
     os << "[";
     while(ptr) {
       os << ptr->data << " > ";
       ptr = ptr->next;
+      if(ptr == f.head) {
+        os << "*";
+        break;
+      }
     }
-    os << "N]";
+    os << "]";
     return os;
   }
 };
 
 template <typename T>
-LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr), length(0) {}
+CircularLinkedList<T>::CircularLinkedList() : head(nullptr), tail(nullptr), length(0) {}
 
 template <typename T>
-LinkedList<T>::~LinkedList() {
+CircularLinkedList<T>::~CircularLinkedList() {
   this->clear();
 }
 
@@ -62,7 +65,7 @@ LinkedList<T>::~LinkedList() {
  * @param value Node value
  */
 template <typename T>
-void LinkedList<T>::push(T value) {
+void CircularLinkedList<T>::push(T value) {
   Node<T>* newNode = new Node<T>;
   newNode->data = value;
   newNode->next = nullptr;
@@ -71,6 +74,7 @@ void LinkedList<T>::push(T value) {
   if (tail) tail->next = newNode;  // List not empty
   tail = newNode;
   length++;
+  tail->next = head;
 }
 
 /**
@@ -82,7 +86,7 @@ void LinkedList<T>::push(T value) {
  * @return True if successful, false if not
  */
 template <typename T>
-bool LinkedList<T>::insert(unsigned int pos, T value) {
+bool CircularLinkedList<T>::insert(unsigned int pos, T value) {
   if (pos > length) return false;  // Out of bounds
   if (pos == length) {             // Add to end, same as push()
     this->push(value);
@@ -94,6 +98,7 @@ bool LinkedList<T>::insert(unsigned int pos, T value) {
     newNode->next = head;
     head = newNode;
     length++;
+    tail->next = head;
     return true;
   }
 
@@ -119,7 +124,7 @@ bool LinkedList<T>::insert(unsigned int pos, T value) {
  * @return Found node value
  */
 template <typename T>
-T LinkedList<T>::get(unsigned int pos) {
+T CircularLinkedList<T>::get(unsigned int pos) {
   if (pos >= length) throw std::out_of_range("Position out of range");
 
   Node<T>* ptr = head;
@@ -138,7 +143,7 @@ T LinkedList<T>::get(unsigned int pos) {
  * @return Value of first node
  */
 template <typename T>
-T LinkedList<T>::front() {
+T CircularLinkedList<T>::front() {
   if (!head) throw std::out_of_range("List has no front node");
   return head->data;
 }
@@ -150,7 +155,7 @@ T LinkedList<T>::front() {
  * @return Value of last node
  */
 template <typename T>
-T LinkedList<T>::back() {
+T CircularLinkedList<T>::back() {
   if (!tail) throw std::out_of_range("List has no back node");
   return tail->data;
 }
@@ -162,7 +167,7 @@ T LinkedList<T>::back() {
  * @return The size of the list
  */
 template <typename T>
-size_t LinkedList<T>::size() {
+size_t CircularLinkedList<T>::size() {
   // Verifies and corrects size of list before returning
   Node<T>* ptr = head;
   size_t check = 0;
@@ -170,6 +175,7 @@ size_t LinkedList<T>::size() {
   while (ptr) {
     check++;
     ptr = ptr->next;
+    if(ptr == head) break;
   }
 
   if (check > length) length = check;
@@ -183,7 +189,7 @@ size_t LinkedList<T>::size() {
  * @return Pointer to head
  */
 template <typename T>
-Node<T>* LinkedList<T>::data() {
+Node<T>* CircularLinkedList<T>::data() {
   return head;
 }
 
@@ -194,7 +200,7 @@ Node<T>* LinkedList<T>::data() {
  * @return True if list is empty, false otherwise
  */
 template <typename T>
-bool LinkedList<T>::empty() {
+bool CircularLinkedList<T>::empty() {
   if (!head) return true;
   return false;
 }
@@ -206,16 +212,18 @@ bool LinkedList<T>::empty() {
  * @param pos Position of node to remove
  */
 template <typename T>
-void LinkedList<T>::erase(unsigned int pos) {
+void CircularLinkedList<T>::erase(unsigned int pos) {
   if (pos >= length) throw std::out_of_range("Position out of range");
   Node<T>* ptr = head;
   Node<T>* ptr2 = nullptr;
 
   if (pos == 0) {  // Delete head node
-    head = ptr->next;
+    head = head->next;
     delete ptr;
     length--;
+    tail->next = head;
     if(length == 0) {
+      head = nullptr;
       tail = nullptr;
     }
     return;
@@ -231,6 +239,7 @@ void LinkedList<T>::erase(unsigned int pos) {
   delete ptr->next;
   length--;
   ptr->next = ptr2;
+  tail->next = head;
 }
 
 /**
@@ -239,8 +248,8 @@ void LinkedList<T>::erase(unsigned int pos) {
  * @tparam T Data type
  */
 template <typename T>
-void LinkedList<T>::clear() {
-  while (head) {
+void CircularLinkedList<T>::clear() {
+  for (int i = 0; i < length; i++) {
     tail = head->next;
     delete head;
     head = tail;
@@ -257,7 +266,7 @@ void LinkedList<T>::clear() {
  * @return T Value of node removed
  */
 template <typename T>
-T LinkedList<T>::pop() {
+T CircularLinkedList<T>::pop() {
   if (length == 0) throw std::out_of_range("No node to pop");
   if (length == 1) { // Only 1 node in list
     T val = head->data;
@@ -281,11 +290,7 @@ T LinkedList<T>::pop() {
   delete ptr->next;
   length--;
   ptr->next = nullptr;
+  tail->next = head;
 
   return val;
 }
-
-// TODO:
-// template <typename T>
-// friend std::ostream& LinkedList<T>::operator<<(std::ostream& os, const
-// LinkedList& f) {}
