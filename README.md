@@ -5,6 +5,6 @@ with an added focus on learning CMake and GoogleTest for unit testing.
 
 ## Data Structures
 
-* [Linked Lists]($/LinkedList)
+* [Linked Lists](LinkedList)
   * Singly Linked List
   * Circular Linked List
