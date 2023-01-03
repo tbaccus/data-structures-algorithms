@@ -14,7 +14,7 @@ Functions:
   Creates a new stack.
 * `push(T value)`  
   Pushes new element to top of the stack.
-* `pop()` returns `T`
+* `pop()` returns `T`  
   Removes the top element of the stack and returns its value.
 * `peek()` returns `T`  
   Returns the top element of the stack without removing it from the stack.
@@ -38,7 +38,7 @@ Functions:
   Creates a new queue.
 * `push(T value)`  
   Pushes new element to back of the queue.
-* `pop()` returns `T`
+* `pop()` returns `T`  
   Removes the front element of the queue and returns its value.
 * `peek()` returns `T`  
   Returns the front element of the queue without removing it from the queue.

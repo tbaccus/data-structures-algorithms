@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(
-  LinkedLists
+  StackQueue
   VERSION 1.0.0
-  DESCRIPTION "Linked List Data Structures"
+  DESCRIPTION "Stack and Queue Data Structures"
   LANGUAGES CXX)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
