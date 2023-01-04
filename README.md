@@ -11,3 +11,5 @@ in C++ as well as CMake, GoogleTest, and documentation of everything along the w
 * [Stack & Queue](StackQueue)
   * Stack
   * Queue
+* [Trees](Trees)
+  * N-Ary Trees (Folder Structure)
