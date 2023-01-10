@@ -53,7 +53,7 @@ Functions:
   Adds a new node to the BST.
 * `search(int)` returns `bool`  
   Searches BST for value given and returns `true` if found or `false` if not.
-* `delete(int)`  
+* `remove(int)`  
   Deletes the node of the given value from the tree, if it exists.
 * `inorderTraversal()` returns `std::vector<int>`  
   Traverses the BST in left-root-right order and returns a vector of the values

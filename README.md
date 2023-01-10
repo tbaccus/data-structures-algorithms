@@ -13,3 +13,4 @@ in C++ as well as CMake, GoogleTest, and documentation of everything along the w
   * Queue
 * [Trees](Trees)
   * N-Ary Trees (Folder Structure)
+  * Binary Search Trees
